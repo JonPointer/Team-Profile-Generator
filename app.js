@@ -11,9 +11,9 @@ const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
 
-employee1 = new Employee("Jon", 3, "jonpointer@msn.com");
+// employee1 = new Employee("Jon", 3, "jonpointer@msn.com");
 
-console.log(employee1);
+// console.log(employee1);
 
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
