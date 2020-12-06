@@ -11,9 +11,96 @@ const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
 
-// employee1 = new Employee("Jon", 3, "jonpointer@msn.com");
+let employees = [];
 
-// console.log(employee1);
+const collectInputs = async (inputs = []) => {
+    const prompts = [
+        {
+            type: 'input',
+            message: 'Name:',
+            name: 'name',
+        },
+        {
+            type: 'input',
+            message: 'ID #:',
+            name: 'id',
+        },
+        {
+            type: 'input',
+            message: 'Email Address:',
+            name: 'email',
+        },
+        {
+            type: 'list',
+            message: 'Choose License:',
+            choices: ["Manager", "Engineer", "Intern"],
+            name: 'role',
+        },
+        // Prompt for office number if role is Manager
+        {
+            type: 'input',
+            message: 'Office Number:',
+            when: (answers) => answers.role === 'Manager',
+            name: 'officeNumber',
+        },
+        // Prompt for github repo if role is Engineer
+        {
+            type: 'input',
+            message: 'GitHub Username:',
+            when: (answers) => answers.role === 'Engineer',
+            name: 'github',
+        },
+        // Prompt for school if role is Intern
+        {
+            type: 'input',
+            message: 'School Name:',
+            when: (answers) => answers.role === 'Intern',
+            name: 'school',
+        },
+        {
+            type: 'confirm',
+            message: 'Do you have more employees to enter?',
+            name: 'again',
+        }
+    ];
+
+    const { again, ...answers } = await inquirer.prompt(prompts);
+    const newInputs = [...inputs, answers];
+    //
+    switch (answers.role) {
+        case "Manager":
+            newEmployee = new Manager(answers.name, answers.id, answers.email, answers.officeNumber);
+            break;
+        case "Engineer":
+            newEmployee = new Engineer(answers.name, answers.id, answers.email, answers.github);
+            break;
+        case "Intern":
+            newEmployee = new Intern(answers.name, answers.id, answers.email, answers.school);
+            break;
+        default:
+            break;
+    }
+    //
+    employees.push(newEmployee);
+    return again ? collectInputs(newInputs) : newInputs;
+};
+
+const main = async () => {
+    const inputs = await collectInputs();
+    console.log(inputs);
+    console.log(employees);
+    let fileContent = render(employees);
+    fs.writeFile('index.html', fileContent, (err) => {
+        // throws an error, you could also catch it here
+        if (err) throw err;
+
+        // success case, the file was saved
+        console.log('index.html written');
+    });
+};
+
+main();
+
 
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
