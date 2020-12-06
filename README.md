@@ -53,5 +53,5 @@ Contact the author with questions via GitHub or email at
 ## Output
 
 Screenshot:
-![Screenshot](./output/screenshot.png)
+![Screenshot](./output/Screenshot.png)
 [Sample Video Recording](https://drive.google.com/file/d/14X1IwgywpXQr6Frg2CMNidrVHLQ_fX4l/view)
